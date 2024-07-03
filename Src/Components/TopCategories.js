@@ -53,7 +53,7 @@ useEffect(() => {
                             "id": items.id
                         })}
                     >
-                        <Image source={{ uri: items.image }} style={{ width: 50, height: 50, borderRadius: '50%' }} />
+                        <Image source={{ uri: items.image }} style={{ width: 50, height: 50, borderRadius: "%50" }} />
                         <Text
                             style={{
                                 fontWeight: '400',

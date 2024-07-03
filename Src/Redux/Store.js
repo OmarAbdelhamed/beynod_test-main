@@ -1,29 +1,29 @@
 import { configureStore } from "@reduxjs/toolkit";
 import localizationReducer from "./Localization";
+import { favoritesReducer } from './favorite';
 import authReducer from "./Authantication";
 import { persistReducer } from "redux-persist";
 import { combineReducers } from "redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const persistConfig = {
-	key: "root",
-	version: 1,
-	storage:AsyncStorage,
+  key: "root",
+  version: 1,
+  storage: AsyncStorage,
 };
 
-const RootReducers = combineReducers({
-	currentLocal: localizationReducer,
-	auth: authReducer,
-
-	
+const rootReducer = combineReducers({
+  currentLocal: localizationReducer,
+  auth: authReducer,
+  favorites: favoritesReducer, 
 });
 
-const persistedReducer = persistReducer(persistConfig, RootReducers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export default configureStore({
-	reducer: persistedReducer,
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({
-			serializableCheck: false,
-		}),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

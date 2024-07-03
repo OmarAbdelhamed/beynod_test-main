@@ -1,119 +1,107 @@
-import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import { Rating } from 'react-native-ratings';
 import Favorite from '../assets/SVG/Favorite';
 import Shopping from '../assets/SVG/Shopping';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleFavorite } from '../Redux/favorite';
 
 const ProductCart = ({
-    img,
-    favIcon,
-    cartIcon,
-    discount,
-    Name,
-    desc,
-    rating,
-    price,
-    discountPrice,
-    isFav,
-    id,
-    handlePress,
+  img,
+  favIcon,
+  cartIcon,
+  discount,
+  Name,
+  desc,
+  rating,
+  price,
+  discountPrice,
+  isFav,
+  id,
+  handlePress,
 }) => {
-    const orginalprice = discountPrice / (1 - (discount / 100))
-    const [favState, setFavState] = useState(false)
-    const login = useSelector((state) => state.auth.authState);
+  const orginalprice = discountPrice / (1 - discount / 100);
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites.items);
+  const login = useSelector((state) => state.auth.authState);
+  
 
-    return (
-        <TouchableOpacity
-            style={{
-                width: Dimensions.get('screen').width / 2.3,
-                marginBottom: 12
-            }}
-            onPress={handlePress}
+  const isFavorite = favorites.includes(id);
+
+  const handleFavoriteToggle = () => {
+    dispatch(toggleFavorite(id));
+  };
+
+  return (
+    <TouchableOpacity
+      style={{
+        width: Dimensions.get('screen').width / 2.3,
+        marginBottom: 12,
+      }}
+      onPress={handlePress}
+    >
+      <View>
+        <Image
+          source={img}
+          style={{
+            width: '100%',
+            height: 300,
+          }}
+        />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            position: 'absolute',
+            top: 10,
+            width: '100%',
+            paddingHorizontal: 5,
+          }}
         >
-            <View>
-                <Image source={img}
-                    style={{
-                        width: '100%',
-                        height: 300
-                    }}
+          {favIcon && (
+            <TouchableOpacity
+              style={{
+                width: 35,
+                height: 35,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 50,
+              }}
+              onPress={handleFavoriteToggle}
+            >
+              {isFavorite ? (
+                <Image
+                  source={{
+                    uri: 'https://beyond-fix.applaiteknoloji.online/home/img/like.png',
+                  }}
+                  width={22}
+                  height={22}
                 />
-
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        position: 'absolute',
-                        top: 10,
-                        width: '100%',
-                        paddingHorizontal: 5
-
-                    }}
-                >
-                  <Text>fjklkjv</Text>
-                    {/* {favIcon &&
-                        <TouchableOpacity
-                            style={{
-                                width: 35,
-                                height: 35,
-                                backgroundColor: 'white',
-                                justifyContent: "center",
-                                alignItems: 'center',
-                                borderRadius: '50%'
-                            }}
-                            onPress={() => {
-                                // setFavState(!favState)
-                                axios.post(`https://beyond-fix.applaiteknoloji.online/api/add-delete-favourite`, {
-                                    product_id: id
-                                }, {
-                                    headers: {
-                                        'Authorization': ` ${login.token}`,
-
-
-                                    }
-                                })
-                                    .then((response) => {
-                                        if (response.status === 200) {
-                                            setFavState(!favState)
-                                            console.log(response.data);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        console.log(error.response.data);
-                                    })
-
-                            }}
-                        >
-                            {favState || isFav ?
-                                <Image source={{ uri: 'https://beyond-fix.applaiteknoloji.online/home/img/like.png' }} width={22} height={22} />
-
-                                :
-                                <Favorite width={22} height={22} fill={'#000'} />
-
-                            }
-
-                        </TouchableOpacity>
-                    }
-                    {cartIcon &&
-                        <TouchableOpacity
-                            style={{
-                                width: 35,
-                                height: 35,
-                                backgroundColor: 'white',
-                                justifyContent: "center",
-                                alignItems: 'center',
-                                borderRadius: '50%'
-                            }}
-                        >
-
-                            <Shopping width={22} height={22} fill={'#000'} />
-                        </TouchableOpacity>
-                    } */}
-
-                </View>
-                {/* {discount &&
+              ) : (
+                <Favorite width={22} height={22} fill={'#000'} />
+              )}
+            </TouchableOpacity>
+          )}
+          {cartIcon && (
+            <TouchableOpacity
+              style={{
+                width: 35,
+                height: 35,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 50,
+              }}
+            >
+              <Shopping width={22} height={22} fill={'#000'} />
+            </TouchableOpacity>
+          )}
+        </View>
+        {/* {discount &&
                     <View
                         style={{
                             flexDirection: 'row',
@@ -141,9 +129,8 @@ const ProductCart = ({
                         >{discount}%</Text>
                     </View>
                 } */}
-
-            </View>
-            {/* <View
+      </View>
+      {/* <View
                 style={{
                     borderColor: 'rgba(242, 242, 242, 1)',
                     borderWidth: 1,
@@ -210,8 +197,8 @@ const ProductCart = ({
                     }
                 </View>
             </View> */}
-        </TouchableOpacity>
-    )
-}
+    </TouchableOpacity>
+  );
+};
 
-export default ProductCart
+export default ProductCart;

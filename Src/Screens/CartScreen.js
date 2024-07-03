@@ -92,7 +92,7 @@ const CartScreen = ({ navigation }) => {
                                 >{data.length} items</Text>
 
 
-                                {data&&data.cart.map((item,index)=>{
+                                {data&&data.cart?.map((item,index)=>{
                                     return(
                                         <CartProductContainer
                                         item={item}

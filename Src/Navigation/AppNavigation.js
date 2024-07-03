@@ -7,7 +7,7 @@ import Welcome1Screen from '../Screens/Welcome1Screen';
 import Welcome2Screen from '../Screens/Welcome2Screen';
 import Welcome3Screen from '../Screens/Welcome3Screen';
 import SignupScreen from '../Screens/SignupScreen';
-// import HomeNavigation from './HomeNavigation';
+import HomeNavigation from './HomeNavigation';
 import BottomTabs from './BottomTabs';
 import ForgetPasswordScreen from '../Screens/ForgetPasswordScreen';
 import { useSelector } from 'react-redux';
